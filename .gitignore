@@ -1,3 +1,5 @@
+.DS_Store
+
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
@@ -15,3 +17,5 @@ node_modules
 
 #!.yarn/cache
 .pnp.*
+
+dist
