@@ -4,8 +4,8 @@ import path from 'node:path';
 import { RuleTester } from 'eslint';
 import sinon from 'sinon';
 
-import cssModuleNameMatchesRule from './src/rules/css-module-name-matches.js';
-import cssModuleClassExists from './src/rules/css-module-class-exists.js';
+import cssModuleNameMatchesRule from './src/rules/css-module-name-matches.mjs';
+import cssModuleClassExists from './src/rules/css-module-class-exists.mjs';
 
 const fakeFileSystem = {
   [`Button.module.css`]: `
@@ -19,6 +19,12 @@ const fakeFileSystem = {
 
     .container:not(.active) {
       opacity: 0.5;
+    }
+
+    @media (max-width: 600px) {
+      .responsive {
+        width: 100%;
+      }
     }
   `,
 };
@@ -122,6 +128,14 @@ ruleTester.run(
           import styles from './Button.module.css';
 
           const activeClass = styles.active;
+        `,
+      },
+      {
+        filename: 'Button.tsx',
+        code: `
+          import styles from './Button.module.css';
+
+          const responsiveClass = styles.responsive;
         `,
       },
     ],

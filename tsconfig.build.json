@@ -6,5 +6,5 @@
     "emitDeclarationOnly": true,
     "declarationDir": "dist/types"
   },
-  "exclude": ["rollup.config.ts", "test.js"]
+  "exclude": ["rollup.config.ts", "test.mjs"]
 }

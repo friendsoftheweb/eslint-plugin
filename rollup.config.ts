@@ -2,7 +2,7 @@ import typescript from '@rollup/plugin-typescript';
 import { defineConfig } from 'rollup';
 
 export default defineConfig({
-  input: ['src/index.js'],
+  input: ['src/index.mjs'],
   output: [
     {
       dir: 'dist/cjs',
