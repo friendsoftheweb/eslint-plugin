@@ -111,6 +111,18 @@ export default {
                 classNames[importName].add(classNode.value);
               });
             }).processSync(node.selector);
+          } else if (node.type === 'atrule' && node.name === 'media') {
+            for (const childNode of node.nodes) {
+              if (childNode.type !== 'rule') {
+                continue;
+              }
+
+              selectorParser(function transform(selectors) {
+                selectors.walkClasses((classNode) => {
+                  classNames[importName].add(classNode.value);
+                });
+              }).processSync(childNode.selector);
+            }
           }
         }
       },

@@ -1,11 +1,11 @@
-import cssModuleNameMatchesRule from './rules/css-module-name-matches.js';
-import cssModuleClassExistsRule from './rules/css-module-class-exists.js';
+import cssModuleNameMatchesRule from './rules/css-module-name-matches.mjs';
+import cssModuleClassExistsRule from './rules/css-module-class-exists.mjs';
 
 /** @type {import('eslint').ESLint.Plugin} */
 const plugin = {
   meta: {
     name: '@friendsoftheweb/eslint-plugin',
-    version: '0.0.1-beta.2',
+    version: '0.0.1-beta.3',
   },
   configs: {},
   rules: {
