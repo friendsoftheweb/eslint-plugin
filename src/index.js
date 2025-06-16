@@ -1,17 +1,11 @@
-import fs from 'node:fs';
-
-const { name, version } = JSON.parse(
-  fs.readFileSync(new URL('./package.json', import.meta.url), 'utf8'),
-);
-
 import cssModuleNameMatchesRule from './rules/css-module-name-matches.js';
 import cssModuleClassExistsRule from './rules/css-module-class-exists.js';
 
 /** @type {import('eslint').ESLint.Plugin} */
 const plugin = {
   meta: {
-    name,
-    version,
+    name: '@friendsoftheweb/eslint-plugin',
+    version: '0.0.1-beta.2',
   },
   configs: {},
   rules: {

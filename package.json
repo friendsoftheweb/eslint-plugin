@@ -1,9 +1,8 @@
 {
   "name": "@friendsoftheweb/eslint-plugin",
   "repository": "https://github.com/friendsoftheweb/eslint-plugin.git",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1-beta.2",
   "license": "MIT",
-  "type": "module",
   "packageManager": "yarn@4.9.2",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
