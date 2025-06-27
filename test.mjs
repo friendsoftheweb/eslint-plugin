@@ -26,6 +26,12 @@ const fakeFileSystem = {
         width: 100%;
       }
     }
+
+    @container (width > 0) {
+      .containerQuery {
+        background-color: pink;
+      }
+    }
   `,
 };
 
@@ -136,6 +142,14 @@ ruleTester.run(
           import styles from './Button.module.css';
 
           const responsiveClass = styles.responsive;
+        `,
+      },
+      {
+        filename: 'Button.tsx',
+        code: `
+          import styles from './Button.module.css';
+
+          const containerClass = styles.containerQuery;
         `,
       },
     ],

@@ -111,7 +111,10 @@ export default {
                 classNames[importName].add(classNode.value);
               });
             }).processSync(node.selector);
-          } else if (node.type === 'atrule' && node.name === 'media') {
+          } else if (
+            node.type === 'atrule' &&
+            (node.name === 'media' || node.name === 'container')
+          ) {
             for (const childNode of node.nodes) {
               if (childNode.type !== 'rule') {
                 continue;
