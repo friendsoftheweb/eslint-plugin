@@ -16,30 +16,35 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      # Setup .npmrc file to publish to GitHub Packages
+
       - uses: actions/setup-node@v3
         with:
-          node-version: '22.x'
-          registry-url: 'https://npm.pkg.github.com'
+          node-version-file: '.nvmrc'
           cache: 'yarn'
-
-      - name: Install Yarn from corepack
-        run: |
-          corepack enable
-          corepack prepare yarn@3.5.0 --activate
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
         run: yarn install --immutable
 
       - run: yarn types:check
 
-      - name: Build
-        run: |
-          yarn build
-          test -f "dist/cjs/index.js"
-          test -f "dist/esm/index.js"
-          test -f "dist/types/index.d.mts"
+      - run: yarn build
 
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Validate build outputs
+        run: |
+          set -euo pipefail
+
+          FILES=(
+            "dist/cjs/index.js"
+            "dist/esm/index.js"
+            "dist/types/index.d.ts"
+          )
+
+          for file in "${FILES[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "Expected build output missing: $file" >&2
+              exit 1
+            fi
+          done
+
+      - run: npm publish --access public --provenance
