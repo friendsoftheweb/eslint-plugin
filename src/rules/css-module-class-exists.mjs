@@ -23,7 +23,7 @@ export default {
       fileDoesNotExist:
         'CSS module file "{{absoluteImportPath}}" does not exist',
       classDoesNotExist:
-        'Class "{{className}}" does not exist in the CSS module imported as "{{objectName}}"',
+        'Class `.{{className}}` does not exist in the CSS module imported as `{{objectName}}`',
     },
   },
   create(context) {
@@ -113,7 +113,9 @@ export default {
             }).processSync(node.selector);
           } else if (
             node.type === 'atrule' &&
-            (node.name === 'media' || node.name === 'container')
+            (node.name === 'media' ||
+              node.name === 'container' ||
+              node.name === 'layer')
           ) {
             for (const childNode of node.nodes) {
               if (childNode.type !== 'rule') {

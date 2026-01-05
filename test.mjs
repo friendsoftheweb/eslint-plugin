@@ -32,6 +32,12 @@ const fakeFileSystem = {
         background-color: pink;
       }
     }
+
+    @layer components {
+      .layer {
+        background-color: green;
+      }
+    }
   `,
 };
 
@@ -150,6 +156,14 @@ ruleTester.run(
           import styles from './Button.module.css';
 
           const containerClass = styles.containerQuery;
+        `,
+      },
+      {
+        filename: 'Button.tsx',
+        code: `
+          import styles from './Button.module.css';
+
+          const layerClass = styles.layer;
         `,
       },
     ],
