@@ -57,6 +57,47 @@ const ruleTester = new RuleTester({
   languageOptions: { ecmaVersion: 2018 },
 });
 
+import banLodashImport from './src/rules/ban-lodash-import.mjs';
+
+ruleTester.run('ban-lodash-import', banLodashImport, {
+  valid: [
+    {
+      filename: 'SomeFile.ts',
+      code: `import { map } from 'lodash-es';`,
+    },
+    {
+      filename: 'SomeFile.ts',
+      code: `import map from 'lodash-es/map';`,
+    },
+  ],
+  invalid: [
+    {
+      filename: 'SomeFile.ts',
+      code: `import { map } from "lodash";`,
+      output: `import { map } from "lodash-es";`,
+      errors: 1,
+    },
+    {
+      filename: 'SomeFile.ts',
+      code: `import _ from "lodash";`,
+      output: `import _ from "lodash-es";`,
+      errors: 1,
+    },
+    {
+      filename: 'SomeFile.ts',
+      code: `import fp from "lodash/fp";`,
+      output: `import fp from "lodash-es/fp";`,
+      errors: 1,
+    },
+    {
+      filename: 'SomeFile.ts',
+      code: `import * as lodash from "lodash";`,
+      output: `import * as lodash from "lodash-es";`,
+      errors: 1,
+    },
+  ],
+});
+
 import cssModuleNameMatchesRule from './src/rules/css-module-name-matches.mjs';
 
 ruleTester.run('css-module-name-matches', cssModuleNameMatchesRule, {
