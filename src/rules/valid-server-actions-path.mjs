@@ -36,7 +36,7 @@ export default {
 
         const isActionsFile =
           (dirname === 'app' || new RegExp(`app${escapedSep}`).test(dirname)) &&
-          basename.endsWith('_actions.ts');
+          /_actions\.(js|ts)$/.test(basename);
 
         if (!isInActionsDir && !isActionsFile) {
           context.report({
