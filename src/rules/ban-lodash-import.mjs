@@ -41,7 +41,12 @@ export default {
                 ? 'lodash-es'
                 : node.source.value.replace(/^lodash\//, 'lodash-es/');
 
-            return fixer.replaceText(node.source, `"${newImportPath}"`);
+            const quote = node.source.raw[0]; // preserve original quote style
+
+            return fixer.replaceText(
+              node.source,
+              `${quote}${newImportPath}${quote}`,
+            );
           },
         });
       },
