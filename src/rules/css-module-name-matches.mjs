@@ -1,5 +1,4 @@
 import path from 'node:path';
-import fs from 'node:fs';
 
 /** @type {import('eslint').JSRuleDefinition} */
 export default {
