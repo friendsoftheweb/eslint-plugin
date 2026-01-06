@@ -32,6 +32,10 @@ export default {
               return null;
             }
 
+            if (node.source.value === 'lodash/fp') {
+              return null; // no automatic fix for fp imports
+            }
+
             const newImportPath =
               node.source.value === 'lodash'
                 ? 'lodash-es'

@@ -85,8 +85,14 @@ ruleTester.run('ban-lodash-import', banLodashImport, {
     },
     {
       filename: 'SomeFile.ts',
+      code: `import map from "lodash/map";`,
+      output: `import map from "lodash-es/map";`,
+      errors: 1,
+    },
+    {
+      filename: 'SomeFile.ts',
       code: `import fp from "lodash/fp";`,
-      output: `import fp from "lodash-es/fp";`,
+      output: null,
       errors: 1,
     },
     {
