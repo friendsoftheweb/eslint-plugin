@@ -3,16 +3,21 @@ import { defineConfig } from 'rollup';
 
 const external = ['node:fs', 'node:path', 'postcss', 'postcss-selector-parser'];
 
+/** @type {import('rollup').OutputOptions} */
+const output = {
+  preserveModules: true,
+  exports: 'auto',
+  sourcemap: true,
+};
+
 export default defineConfig([
   {
     input: 'src/index.mjs',
     output: [
       {
+        ...output,
         dir: 'dist/esm',
         format: 'esm',
-        preserveModules: true,
-        exports: 'auto',
-        sourcemap: true,
       },
     ],
     plugins: [
@@ -26,11 +31,9 @@ export default defineConfig([
     input: 'src/index.mjs',
     output: [
       {
+        ...output,
         dir: 'dist/cjs',
         format: 'cjs',
-        preserveModules: true,
-        exports: 'auto',
-        sourcemap: true,
       },
     ],
     plugins: [
