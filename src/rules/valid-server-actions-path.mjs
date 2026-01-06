@@ -1,5 +1,4 @@
 import path from 'node:path';
-import fs from 'node:fs';
 
 /** @type {import('eslint').JSRuleDefinition} */
 export default {
@@ -25,9 +24,8 @@ export default {
           return;
         }
 
-        const currentFilename = context.getFilename();
-        const basename = path.basename(currentFilename);
-        const dirname = path.dirname(currentFilename);
+        const basename = path.basename(context.filename);
+        const dirname = path.dirname(context.filename);
 
         const isInActionsDir = new RegExp(
           `app(${path.sep}.*)?${path.sep}_actions`,
