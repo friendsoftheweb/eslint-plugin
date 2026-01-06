@@ -77,7 +77,7 @@ ruleTester.run('css-module-name-matches', cssModuleNameMatchesRule, {
 
 import cssModuleClassExists from './src/rules/css-module-class-exists.mjs';
 
-ruleTester.run('css-module-class-name-exists', cssModuleClassExists, {
+ruleTester.run('css-module-class-exists', cssModuleClassExists, {
   valid: [
     {
       filename: 'Button.tsx',
