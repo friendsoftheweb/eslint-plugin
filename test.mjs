@@ -216,6 +216,11 @@ ruleTester.run('valid-server-actions-path', validServerActionsPathRule, {
   ],
   invalid: [
     {
+      filename: 'src/_actions.ts',
+      code: "'use server';\n\nexport async function action() {}",
+      errors: 1,
+    },
+    {
       filename: 'app/checkout/actions.ts',
       code: "'use server';\n\nexport async function action() {}",
       errors: 1,

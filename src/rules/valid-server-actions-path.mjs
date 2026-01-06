@@ -6,7 +6,7 @@ export default {
     type: 'problem',
     docs: {
       description:
-        'enforce server actions are exported from file paths that match "_actions.ts" or "_actions/**"',
+        'enforce server actions are exported from file paths that match "app/**/_actions.ts" or "app/**/_actions/**/*.ts"',
     },
     schema: [],
     messages: {
@@ -34,7 +34,9 @@ export default {
           `app(${escapedSep}.*)?${escapedSep}_actions`,
         ).test(dirname);
 
-        const isActionsFile = basename.endsWith('_actions.ts');
+        const isActionsFile =
+          (dirname === 'app' || new RegExp(`app${escapedSep}`).test(dirname)) &&
+          basename.endsWith('_actions.ts');
 
         if (!isInActionsDir && !isActionsFile) {
           context.report({
