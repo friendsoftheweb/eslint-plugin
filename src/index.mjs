@@ -4,7 +4,7 @@ import cssModuleClassExistsRule from './rules/css-module-class-exists.mjs';
 /** @type {import('eslint').ESLint.Plugin} */
 const plugin = {
   meta: {
-    name: '@ftw/eslint-plugin',
+    name: '@friendsoftheweb/eslint-plugin',
     version: '0.0.1',
   },
   configs: {},
