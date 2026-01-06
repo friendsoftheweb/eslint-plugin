@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import path from 'node:path';
 
 import { RuleTester } from 'eslint';
 import sinon from 'sinon';
