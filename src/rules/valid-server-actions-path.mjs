@@ -27,8 +27,11 @@ export default {
         const basename = path.basename(context.filename);
         const dirname = path.dirname(context.filename);
 
+        // Escape backslashes for RegExp (Windows paths)
+        const escapedSep = path.sep.replace('\\', '\\\\');
+
         const isInActionsDir = new RegExp(
-          `app(${path.sep}.*)?${path.sep}_actions`,
+          `app(${escapedSep}.*)?${escapedSep}_actions`,
         ).test(dirname);
 
         const isActionsFile = basename.endsWith('_actions.ts');
