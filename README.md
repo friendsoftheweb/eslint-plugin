@@ -1,9 +1,9 @@
-# @ftw/eslint-plugin
+# @friendsoftheweb/eslint-plugin
 
 ## Installation
 
 ```bash
-yarn add -D @ftw/eslint-plugin
+yarn add -D @friendsoftheweb/eslint-plugin
 ```
 
 ## Example Configurations
@@ -11,7 +11,7 @@ yarn add -D @ftw/eslint-plugin
 ## Basic Example
 
 ```javascript
-import friendsOfTheWeb from '@ftw/eslint-plugin';
+import friendsOfTheWeb from '@friendsoftheweb/eslint-plugin';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
@@ -30,7 +30,7 @@ export default defineConfig([
 ## Example with React
 
 ```javascript
-import friendsOfTheWeb from '@ftw/eslint-plugin';
+import friendsOfTheWeb from '@friendsoftheweb/eslint-plugin';
 import react from 'eslint-plugin-react';
 import reactCompiler from 'eslint-plugin-react-compiler';
 import reactHooks from 'eslint-plugin-react-hooks';

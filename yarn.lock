@@ -100,9 +100,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ftw/eslint-plugin@workspace:.":
+"@friendsoftheweb/eslint-plugin@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@ftw/eslint-plugin@workspace:."
+  resolution: "@friendsoftheweb/eslint-plugin@workspace:."
   dependencies:
     "@rollup/plugin-typescript": "npm:^12.1.2"
     "@types/node": "npm:^22.15.31"
