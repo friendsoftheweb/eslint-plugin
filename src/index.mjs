@@ -1,3 +1,5 @@
+import packageJson from '../package.json' with { type: 'json' };
+
 import banLodashImport from './rules/ban-lodash-import.mjs';
 import cssModuleNameMatchesRule from './rules/css-module-name-matches.mjs';
 import cssModuleClassExistsRule from './rules/css-module-class-exists.mjs';
@@ -6,8 +8,8 @@ import validServerActionsPathRule from './rules/valid-server-actions-path.mjs';
 /** @type {import('eslint').ESLint.Plugin} */
 const plugin = {
   meta: {
-    name: '@friendsoftheweb/eslint-plugin',
-    version: '0.0.1',
+    name: packageJson.name,
+    version: packageJson.version,
   },
   configs: {},
   rules: {
