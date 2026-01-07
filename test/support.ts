@@ -6,7 +6,7 @@ import {
   RuleTester,
   type ValidTestCase,
 } from '@typescript-eslint/rule-tester';
-import sinon from 'sinon';
+import sinon, { type SinonStub } from 'sinon';
 
 RuleTester.afterAll = test.after;
 RuleTester.describe = test.describe;
@@ -20,16 +20,19 @@ export const ruleTester = new RuleTester({
 });
 
 export function stubFileSystem(fakeFileSystem: Record<string, string>) {
-  let existsSyncStub;
-  let readFileSyncStub;
+  let existsSyncStub: SinonStub;
+  let readFileSyncStub: SinonStub;
 
   test.before(() => {
     existsSyncStub = sinon.stub(fs, 'existsSync').callsFake((filePath) => {
       const cwd = process.cwd();
 
-      const relativeFilePath = filePath.startsWith(cwd)
-        ? filePath.slice(cwd.length).replace(/^\//, '')
-        : filePath;
+      const stringFilePath =
+        typeof filePath === 'string' ? filePath : filePath.toString();
+
+      const relativeFilePath = stringFilePath.startsWith(cwd)
+        ? stringFilePath.slice(cwd.length).replace(/^\//, '')
+        : stringFilePath;
 
       return fakeFileSystem[relativeFilePath] != null;
     });
@@ -37,17 +40,20 @@ export function stubFileSystem(fakeFileSystem: Record<string, string>) {
     readFileSyncStub = sinon.stub(fs, 'readFileSync').callsFake((filePath) => {
       const cwd = process.cwd();
 
-      const relativeFilePath = filePath.startsWith(cwd)
-        ? filePath.slice(cwd.length).replace(/^\//, '')
-        : filePath;
+      const stringFilePath =
+        typeof filePath === 'string' ? filePath : filePath.toString();
+
+      const relativeFilePath = stringFilePath.startsWith(cwd)
+        ? stringFilePath.slice(cwd.length).replace(/^\//, '')
+        : stringFilePath;
 
       return fakeFileSystem[relativeFilePath];
     });
   });
 
   test.after(() => {
-    existsSyncStub?.reset();
-    readFileSyncStub?.reset();
+    existsSyncStub?.restore();
+    readFileSyncStub?.restore();
   });
 }
 
