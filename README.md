@@ -8,14 +8,16 @@ yarn add -D @friendsoftheweb/eslint-plugin
 
 ## Rules
 
-### `friendsoftheweb/ban-lodash-import`
+### Recommended Rules
+
+#### `friendsoftheweb/ban-lodash-import`
 
 Enforces importing functions from `lodash-es` instead of `lodash`.
 
 This rule helps ensure tree shaking works properly by preferring ES module
 imports from `lodash-es` over CommonJS imports from `lodash`.
 
-#### Examples
+##### Examples
 
 ❌ **Incorrect:**
 
@@ -35,12 +37,12 @@ import debounce from 'lodash-es/debounce';
 **Note:** This rule provides automatic fixes for most cases, except for
 `lodash/fp` imports which require manual migration.
 
-### `friendsoftheweb/css-module-class-exists`
+#### `friendsoftheweb/css-module-class-exists`
 
 Enforces that class names used from an imported CSS module exist in the module
 file.
 
-### `friendsoftheweb/css-module-name-matches`
+#### `friendsoftheweb/css-module-name-matches`
 
 Enforces that a CSS module's filename matches the filename of the importing
 file.
@@ -48,7 +50,17 @@ file.
 This rule ensures consistent naming conventions by requiring CSS module files to
 have the same base name as the file importing them.
 
-### `friendsoftheweb/react-named-func-components`
+#### `friendsoftheweb/valid-server-actions-path`
+
+Enforces server actions are exported from file paths that match
+`app/**/_actions.ts` or `app/**/_actions/**/*.ts`.
+
+This rule helps maintain a consistent file structure for Next.js server actions
+by ensuring they are placed in designated locations.
+
+### Future Rules
+
+#### `friendsoftheweb/react-named-func-components`
 
 Enforces using named functions when defining React components instead of arrow
 functions. Component definitions that are wrapped in a function call (e.g.
@@ -58,7 +70,7 @@ This rule promotes better debugging and development experience by ensuring React
 components are defined as named functions, which provide clearer stack traces
 and better display names in React DevTools.
 
-#### Examples
+##### Examples
 
 ❌ **Incorrect:**
 
@@ -92,17 +104,9 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren>(
 Button.displayName = 'Button';
 ```
 
-### `friendsoftheweb/valid-server-actions-path`
-
-Enforces server actions are exported from file paths that match
-`app/**/_actions.ts` or `app/**/_actions/**/*.ts`.
-
-This rule helps maintain a consistent file structure for Next.js server actions
-by ensuring they are placed in designated locations.
-
 ## Example Configurations
 
-### Basic Example
+### Recommended Configuration
 
 ```javascript
 import friendsOfTheWeb from '@friendsoftheweb/eslint-plugin';
@@ -121,29 +125,7 @@ export default defineConfig([
 ]);
 ```
 
-### Gradual Adoption
-
-There is an additional configuration that makes it easier to adopt this plugin
-by only warning about violations.
-
-```javascript
-import friendsOfTheWeb from '@friendsoftheweb/eslint-plugin';
-import { defineConfig } from 'eslint/config';
-import tseslint from 'typescript-eslint';
-
-export default defineConfig([
-  { ignores: ['.yarn/**/*'] },
-  {
-    files: ['**/*.{js,jsx,ts,tsx}'],
-    extends: [
-      tseslint.configs.recommended,
-      friendsOfTheWeb.configs['flat/migrate'],
-    ],
-  },
-]);
-```
-
-### Example with React
+#### Recommended Configuration with React
 
 ```javascript
 import friendsOfTheWeb from '@friendsoftheweb/eslint-plugin';
@@ -170,6 +152,53 @@ export default defineConfig([
         version: 'detect',
       },
     },
+  },
+]);
+```
+
+#### Gradual Adoption
+
+There is an additional configuration that makes it easier to adopt this plugin
+by only warning about violations.
+
+```javascript
+import friendsOfTheWeb from '@friendsoftheweb/eslint-plugin';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig([
+  { ignores: ['.yarn/**/*'] },
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    extends: [
+      tseslint.configs.recommended,
+      friendsOfTheWeb.configs['flat/migrate'],
+    ],
+  },
+]);
+```
+
+### Future Configuration
+
+This configuration includes all of the [recommended rules](#recommended-rules)
+and [additional rules](#future-rules) that will be considered violations in the
+future.
+
+Future rule violations are considered warnings with this configuration.
+
+```javascript
+import friendsOfTheWeb from '@friendsoftheweb/eslint-plugin';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig([
+  { ignores: ['.yarn/**/*'] },
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    extends: [
+      tseslint.configs.recommended,
+      friendsOfTheWeb.configs['flat/future'],
+    ],
   },
 ]);
 ```
