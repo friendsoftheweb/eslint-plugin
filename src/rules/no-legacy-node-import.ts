@@ -1,5 +1,6 @@
-/** @type {import('eslint').JSRuleDefinition} */
-export default {
+import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+
+const noLegacyNodeImportRule: RuleModule<'invalidImport'> = {
   meta: {
     type: 'problem',
     fixable: 'code',
@@ -14,6 +15,7 @@ export default {
         'Node standard library modules must be imported using the "node:" prefix',
     },
   },
+  defaultOptions: [],
   create(context) {
     return {
       ImportDeclaration(node) {
@@ -45,6 +47,8 @@ export default {
     };
   },
 };
+
+export default noLegacyNodeImportRule;
 
 export const NODE_STANDARD_MODULES = Object.freeze([
   'assert',

@@ -1,5 +1,5 @@
-import noLegacyNodeImport from '../../src/rules/no-legacy-node-import.mjs';
-import { ruleTester } from '../support.mjs';
+import noLegacyNodeImport from '../../src/rules/no-legacy-node-import.ts';
+import { ruleTester } from '../support.ts';
 
 ruleTester.run('no-legacy-node-import', noLegacyNodeImport, {
   valid: [
@@ -54,62 +54,102 @@ ruleTester.run('no-legacy-node-import', noLegacyNodeImport, {
       filename: 'file.ts',
       code: `import fs from 'fs';`,
       output: `import fs from 'node:fs';`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     {
       filename: 'file.ts',
       code: `import fs from 'fs/promises';`,
       output: `import fs from 'node:fs/promises';`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     {
       filename: 'file.ts',
       code: `import path from 'path';`,
       output: `import path from 'node:path';`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     {
       filename: 'file.ts',
       code: `import { readFile, writeFile } from 'fs';`,
       output: `import { readFile, writeFile } from 'node:fs';`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     {
       filename: 'file.ts',
       code: `import * as crypto from 'crypto';`,
       output: `import * as crypto from 'node:crypto';`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     {
       filename: 'file.ts',
       code: `import util from 'util';`,
       output: `import util from 'node:util';`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     {
       filename: 'file.ts',
       code: `import os from 'os';`,
       output: `import os from 'node:os';`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     {
       filename: 'file.ts',
       code: `import buffer from 'buffer';`,
       output: `import buffer from 'node:buffer';`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     {
       filename: 'file.ts',
       code: `import child_process from 'child_process';`,
       output: `import child_process from 'node:child_process';`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     // Test that quote style is preserved
     {
       filename: 'file.ts',
       code: `import fs from "fs";`,
       output: `import fs from "node:fs";`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
   ],
 });

@@ -1,5 +1,5 @@
-import cssModuleNameMatchesRule from '../../src/rules/css-module-name-matches.mjs';
-import { ruleTester } from '../support.mjs';
+import cssModuleNameMatchesRule from '../../src/rules/css-module-name-matches.ts';
+import { ruleTester } from '../support.ts';
 
 ruleTester.run('css-module-name-matches', cssModuleNameMatchesRule, {
   valid: [
@@ -12,7 +12,11 @@ ruleTester.run('css-module-name-matches', cssModuleNameMatchesRule, {
     {
       filename: 'Button.tsx',
       code: "import styles from './NotButton.module.css';",
-      errors: 1,
+      errors: [
+        {
+          messageId: 'filenameMismatch',
+        },
+      ],
     },
   ],
 });

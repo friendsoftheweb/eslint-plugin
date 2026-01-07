@@ -1,5 +1,6 @@
-/** @type {import('eslint').JSRuleDefinition} */
-export default {
+import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+
+const banLodashImportRule: RuleModule<'invalidImport'> = {
   meta: {
     type: 'problem',
     fixable: 'code',
@@ -14,6 +15,7 @@ export default {
         'Functions must be imported from "lodash-es" instead of "lodash"',
     },
   },
+  defaultOptions: [],
   create(context) {
     return {
       ImportDeclaration(node) {
@@ -54,3 +56,5 @@ export default {
     };
   },
 };
+
+export default banLodashImportRule;

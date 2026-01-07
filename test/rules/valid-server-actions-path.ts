@@ -1,5 +1,5 @@
-import validServerActionsPathRule from '../../src/rules/valid-server-actions-path.mjs';
-import { ruleTester } from '../support.mjs';
+import validServerActionsPathRule from '../../src/rules/valid-server-actions-path.ts';
+import { ruleTester } from '../support.ts';
 
 ruleTester.run('valid-server-actions-path', validServerActionsPathRule, {
   valid: [
@@ -48,32 +48,56 @@ ruleTester.run('valid-server-actions-path', validServerActionsPathRule, {
     {
       filename: 'src/_actions.ts',
       code: "'use server';\n\nexport async function action() {}",
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidPath',
+        },
+      ],
     },
     {
       filename: 'src/_actions.js',
       code: "'use server';\n\nexport async function action() {}",
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidPath',
+        },
+      ],
     },
     {
       filename: 'app/checkout/actions.ts',
       code: "'use server';\n\nexport async function action() {}",
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidPath',
+        },
+      ],
     },
     {
       filename: 'app/checkout/actions.js',
       code: "'use server';\n\nexport async function action() {}",
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidPath',
+        },
+      ],
     },
     {
       filename: 'app/checkout/actions/checkout.ts',
       code: "'use server';\n\nexport async function action() {}",
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidPath',
+        },
+      ],
     },
     {
       filename: 'app/checkout/actions/checkout.js',
       code: "'use server';\n\nexport async function action() {}",
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidPath',
+        },
+      ],
     },
   ],
 });
