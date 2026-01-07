@@ -6,6 +6,7 @@ export default {
     docs: {
       description:
         'enforce importing functions from `lodash-es` instead of `lodash`',
+      url: 'https://github.com/friendsoftheweb/eslint-plugin#friendsofthewebban-lodash-import',
     },
     schema: [],
     messages: {

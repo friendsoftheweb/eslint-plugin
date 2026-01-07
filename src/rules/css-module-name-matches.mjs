@@ -7,6 +7,7 @@ export default {
     docs: {
       description:
         "enforce that a CSS module's filename matches the filename of the importing file",
+      url: 'https://github.com/friendsoftheweb/eslint-plugin#friendsofthewebcss-module-name-matches',
     },
     schema: [],
     messages: {

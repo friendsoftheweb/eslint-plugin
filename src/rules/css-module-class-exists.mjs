@@ -11,6 +11,7 @@ export default {
     docs: {
       description:
         'enforce that class names used from an imported CSS module exist in the module file',
+      url: 'https://github.com/friendsoftheweb/eslint-plugin#friendsofthewebcss-module-class-exists',
     },
     schema: [],
     messages: {
