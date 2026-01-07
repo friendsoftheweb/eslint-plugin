@@ -1,8 +1,9 @@
 import cssModuleClassExists from '../../src/rules/css-module-class-exists.mjs';
-import { restoreFileSystem, ruleTester, stubFileSystem } from '../support.mjs';
+import { ruleTester, stubFileSystem } from '../support.mjs';
 
-stubFileSystem({
-  [`Button.module.css`]: `
+stubFileSystem(
+  {
+    [`Button.module.css`]: `
     .container {
       background-color: blue;
     }
@@ -33,118 +34,118 @@ stubFileSystem({
       }
     }
   `,
-});
+  },
+  () => {
+    ruleTester.run('css-module-class-exists', cssModuleClassExists, {
+      valid: [
+        {
+          filename: 'Button.tsx',
+          code: `import styles from './Button.module.css';`,
+        },
+        {
+          filename: 'Button.tsx',
+          code: `
+            import styles from './Button.module.css';
 
-ruleTester.run('css-module-class-exists', cssModuleClassExists, {
-  valid: [
-    {
-      filename: 'Button.tsx',
-      code: `import styles from './Button.module.css';`,
-    },
-    {
-      filename: 'Button.tsx',
-      code: `
-          import styles from './Button.module.css';
+            const buttonClass = styles.container;
+          `,
+        },
+        {
+          filename: 'Button.tsx',
+          code: `
+            import styles from './Button.module.css';
 
-          const buttonClass = styles.container;
-        `,
-    },
-    {
-      filename: 'Button.tsx',
-      code: `
-          import styles from './Button.module.css';
+            const buttonClass = styles['container'];
+          `,
+        },
+        {
+          filename: 'Button.tsx',
+          code: `
+            import styles from './Button.module.css';
 
-          const buttonClass = styles['container'];
-        `,
-    },
-    {
-      filename: 'Button.tsx',
-      code: `
-          import styles from './Button.module.css';
+            const { container } = styles;
+          `,
+        },
+        {
+          filename: 'Button.tsx',
+          code: `
+            import styles from './Button.module.css';
 
-          const { container } = styles;
-        `,
-    },
-    {
-      filename: 'Button.tsx',
-      code: `
-          import styles from './Button.module.css';
+            const disabledClass = styles.disabled;
+          `,
+        },
+        {
+          filename: 'Button.tsx',
+          code: `
+            import styles from './Button.module.css';
 
-          const disabledClass = styles.disabled;
-        `,
-    },
-    {
-      filename: 'Button.tsx',
-      code: `
-          import styles from './Button.module.css';
+            const activeClass = styles.active;
+          `,
+        },
+        {
+          filename: 'Button.tsx',
+          code: `
+            import styles from './Button.module.css';
 
-          const activeClass = styles.active;
-        `,
-    },
-    {
-      filename: 'Button.tsx',
-      code: `
-          import styles from './Button.module.css';
+            const responsiveClass = styles.responsive;
+          `,
+        },
+        {
+          filename: 'Button.tsx',
+          code: `
+            import styles from './Button.module.css';
 
-          const responsiveClass = styles.responsive;
-        `,
-    },
-    {
-      filename: 'Button.tsx',
-      code: `
-          import styles from './Button.module.css';
+            const containerClass = styles.containerQuery;
+          `,
+        },
+        {
+          filename: 'Button.tsx',
+          code: `
+            import styles from './Button.module.css';
 
-          const containerClass = styles.containerQuery;
-        `,
-    },
-    {
-      filename: 'Button.tsx',
-      code: `
-          import styles from './Button.module.css';
+            const layerClass = styles.layer;
+          `,
+        },
+      ],
+      invalid: [
+        {
+          filename: 'Button.tsx',
+          code: `import styles from '/absolute/path/to/Button.module.css';`,
+          errors: 1,
+        },
+        {
+          filename: 'Button.tsx',
+          code: `import { container } from './Button.module.css';`,
+          errors: 1,
+        },
+        {
+          filename: 'Button.tsx',
+          code: `
+            import styles from './Button.module.css';
 
-          const layerClass = styles.layer;
-        `,
-    },
-  ],
-  invalid: [
-    {
-      filename: 'Button.tsx',
-      code: `import styles from '/absolute/path/to/Button.module.css';`,
-      errors: 1,
-    },
-    {
-      filename: 'Button.tsx',
-      code: `import { container } from './Button.module.css';`,
-      errors: 1,
-    },
-    {
-      filename: 'Button.tsx',
-      code: `
-          import styles from './Button.module.css';
+            const buttonClass = styles.nonExistentClass;
+          `,
+          errors: 1,
+        },
+        {
+          filename: 'Button.tsx',
+          code: `
+            import styles from './Button.module.css';
 
-          const buttonClass = styles.nonExistentClass;
-        `,
-      errors: 1,
-    },
-    {
-      filename: 'Button.tsx',
-      code: `
-          import styles from './Button.module.css';
+            const buttonClass = styles['nonExistentClass'];
+          `,
+          errors: 1,
+        },
+        {
+          filename: 'Button.tsx',
+          code: `
+            import styles from './Button.module.css';
 
-          const buttonClass = styles['nonExistentClass'];
-        `,
-      errors: 1,
-    },
-    {
-      filename: 'Button.tsx',
-      code: `
-          import styles from './Button.module.css';
-
-          const { nonExistentClass } = styles;
-        `,
-      errors: 1,
-    },
-  ],
-});
-
-restoreFileSystem();
+            const { nonExistentClass } = styles;
+          `,
+          errors: 1,
+        },
+      ],
+    });
+  },
+);

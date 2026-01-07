@@ -8,27 +8,38 @@ export const ruleTester = new RuleTester({
 });
 
 /**
- *
  * @param {Record<string, string>} fakeFileSystem
+ * @param {() => void} runTests
  */
-export function stubFileSystem(fakeFileSystem) {
-  sinon.stub(fs, 'existsSync').callsFake((filePath) => {
-    const relativeFilePath = filePath
-      .replace(process.cwd(), '')
-      .replace(/^\//, '');
+export function stubFileSystem(fakeFileSystem, runTests) {
+  let existsSyncStub;
+  let readFileSyncStub;
 
-    return fakeFileSystem[relativeFilePath] != null;
-  });
+  try {
+    existsSyncStub = sinon.stub(fs, 'existsSync').callsFake((filePath) => {
+      const relativeFilePath = filePath
+        .replace(process.cwd(), '')
+        .replace(/^\//, '');
 
-  sinon.stub(fs, 'readFileSync').callsFake((filePath) => {
-    const relativeFilePath = filePath
-      .replace(process.cwd(), '')
-      .replace(/^\//, '');
+      return fakeFileSystem[relativeFilePath] != null;
+    });
 
-    return fakeFileSystem[relativeFilePath];
-  });
-}
+    readFileSyncStub = sinon.stub(fs, 'readFileSync').callsFake((filePath) => {
+      const relativeFilePath = filePath
+        .replace(process.cwd(), '')
+        .replace(/^\//, '');
 
-export function restoreFileSystem() {
-  sinon.restore();
+      return fakeFileSystem[relativeFilePath];
+    });
+
+    runTests();
+  } finally {
+    if (existsSyncStub != null) {
+      existsSyncStub.restore();
+    }
+
+    if (readFileSyncStub != null) {
+      readFileSyncStub.restore();
+    }
+  }
 }
