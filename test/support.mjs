@@ -17,17 +17,21 @@ export function stubFileSystem(fakeFileSystem, runTests) {
 
   try {
     existsSyncStub = sinon.stub(fs, 'existsSync').callsFake((filePath) => {
-      const relativeFilePath = filePath
-        .replace(process.cwd(), '')
-        .replace(/^\//, '');
+      const cwd = process.cwd();
+
+      const relativeFilePath = filePath.startsWith(cwd)
+        ? filePath.slice(cwd.length).replace(/^\//, '')
+        : filePath;
 
       return fakeFileSystem[relativeFilePath] != null;
     });
 
     readFileSyncStub = sinon.stub(fs, 'readFileSync').callsFake((filePath) => {
-      const relativeFilePath = filePath
-        .replace(process.cwd(), '')
-        .replace(/^\//, '');
+      const cwd = process.cwd();
+
+      const relativeFilePath = filePath.startsWith(cwd)
+        ? filePath.slice(cwd.length).replace(/^\//, '')
+        : filePath;
 
       return fakeFileSystem[relativeFilePath];
     });
