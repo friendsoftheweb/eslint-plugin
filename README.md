@@ -48,6 +48,50 @@ file.
 This rule ensures consistent naming conventions by requiring CSS module files to
 have the same base name as the file importing them.
 
+### `friendsoftheweb/react-named-func-components`
+
+Enforces using named functions when defining React components instead of arrow
+functions. Component definitions that are wrapped in a function call (e.g.
+`forwardRef()`) are allowed to use arrow functions.
+
+This rule promotes better debugging and development experience by ensuring React
+components are defined as named functions, which provide clearer stack traces
+and better display names in React DevTools.
+
+#### Examples
+
+❌ **Incorrect:**
+
+```tsx
+const Button: FC<PropsWithChildren> = (props) => {
+  const { children } = props;
+
+  return <button>{children}</button>;
+};
+```
+
+✅ **Correct:**
+
+```tsx
+function Button(props: PropsWithChildren) {
+  const { children } = props;
+
+  return <button>{children}</button>;
+}
+```
+
+```tsx
+const Button = forwardRef<HTMLButtonElement, PropsWithChildren>(
+  (props, ref) => {
+    const { children } = props;
+
+    return <button ref={ref}>{children}</button>;
+  },
+);
+
+Button.displayName = 'Button';
+```
+
 ### `friendsoftheweb/valid-server-actions-path`
 
 Enforces server actions are exported from file paths that match
