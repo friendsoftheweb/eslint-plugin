@@ -79,6 +79,14 @@ function isReactComponent(
     // @ts-expect-error: ESTree types are missing JSXElement
   } else if (node.body.type === 'JSXElement') {
     return true;
+  } else if (
+    // @ts-expect-error: ESTree types are missing ParenthesizedExpression
+    node.body.type === 'ParenthesizedExpression' &&
+    // @ts-expect-error: ESTree types are missing JSXElement
+    node.body.expression?.type === 'JSXElement'
+  ) {
+    return true;
   }
+
   return false;
 }
