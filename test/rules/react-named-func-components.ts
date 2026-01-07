@@ -43,6 +43,14 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
         });
       `,
     }),
+    normalizeTestCase({
+      filename: 'Component.tsx',
+      code: `
+        export function Component() {
+          return <>Hello, world!</>;
+        }
+      `,
+    }),
   ],
   invalid: [
     normalizeTestCase({
@@ -76,6 +84,19 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
       code: `
         const Component: FC = async () => {
           return <div>Hello, world!</div>;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'invalidComponentDefinition',
+        },
+      ],
+    }),
+    normalizeTestCase({
+      filename: 'Component.tsx',
+      code: `
+        const Component: FC = () => {
+          return <>Hello, world!</>;
         }
       `,
       errors: [
