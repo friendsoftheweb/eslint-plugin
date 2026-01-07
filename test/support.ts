@@ -66,6 +66,13 @@ export function normalizeTestCase<
 >(options: TestCase): TestCase {
   const [line1, line2, ...rest] = options.code.split('\n');
 
+  if (line2 == null) {
+    return {
+      ...options,
+      code: line1.trim(),
+    };
+  }
+
   if (line1.trim() === '') {
     const indent = line2.match(/^\s*/)[0]?.length ?? 0;
 
