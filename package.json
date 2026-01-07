@@ -21,7 +21,7 @@
     "dist"
   ],
   "scripts": {
-    "test": "node test.mjs",
+    "test": "node test/index.mjs",
     "types:check": "tsc --noEmit",
     "lint": "eslint",
     "format:check": "prettier --check .",
