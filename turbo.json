@@ -1,0 +1,33 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["yarn.lock"],
+  "tasks": {
+    "types:check": {
+      "inputs": ["tsconfig.json", "src/**/*.ts", "test/**/*.ts"]
+    },
+    "lint": {
+      "inputs": ["eslint.config.mjs", "src/**/*.ts", "test/**/*.ts"]
+    },
+    "test": {
+      "inputs": ["src/**/*.ts", "test/**/*.ts"]
+    },
+    "build": {
+      "dependsOn": ["types:check", "lint", "test"],
+      "inputs": [
+        "package.json",
+        "rollup.config.mjs",
+        "tsconfig.build.json",
+        "src/**/*.ts"
+      ],
+      "outputs": ["dist/**"]
+    },
+    "publish": {
+      "dependsOn": ["build"],
+      "interactive": true
+    },
+    "publish:next": {
+      "dependsOn": ["build"],
+      "interactive": true
+    }
+  }
+}
