@@ -4,6 +4,7 @@ import banLodashImport from './rules/ban-lodash-import.mjs';
 import cssModuleNameMatchesRule from './rules/css-module-name-matches.mjs';
 import cssModuleClassExistsRule from './rules/css-module-class-exists.mjs';
 import noLegacyNodeImport from './rules/no-legacy-node-import.mjs';
+import reactNamedFuncComponents from './rules/react-named-func-components.mjs';
 import validServerActionsPathRule from './rules/valid-server-actions-path.mjs';
 
 /** @type {import('eslint').ESLint.Plugin} */
@@ -18,6 +19,7 @@ const plugin = {
     'css-module-name-matches': cssModuleNameMatchesRule,
     'css-module-class-exists': cssModuleClassExistsRule,
     'no-legacy-node-import': noLegacyNodeImport,
+    'react-named-func-components': reactNamedFuncComponents,
     'valid-server-actions-path': validServerActionsPathRule,
   },
 };
@@ -40,11 +42,40 @@ function buildConfig(reportLevel) {
   };
 }
 
+const errorConfig = buildConfig('error');
+const warnConfig = buildConfig('warn');
+
+const futureConfig = {
+  ...errorConfig,
+  rules: {
+    ...errorConfig.rules,
+    'friendsoftheweb/react-named-func-components': 'warn',
+  },
+};
+
+const recommendedConfig = {
+  ...errorConfig,
+  rules: {
+    ...errorConfig.rules,
+    'friendsoftheweb/react-named-func-components': 'off',
+  },
+};
+
+const migrateConfig = {
+  ...warnConfig,
+  rules: {
+    ...warnConfig.rules,
+    'friendsoftheweb/react-named-func-components': 'off',
+  },
+};
+
 Object.assign(plugin.configs, {
-  'flat/recommended': [buildConfig('error')],
-  'flat/migrate': [buildConfig('warn')],
-  recommended: buildConfig('error'),
-  migrate: buildConfig('warn'),
+  'flat/future': [futureConfig],
+  'flat/recommended': [recommendedConfig],
+  'flat/migrate': [migrateConfig],
+  future: futureConfig,
+  recommended: recommendedConfig,
+  migrate: migrateConfig,
 });
 
 export default plugin;

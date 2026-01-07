@@ -1,21 +1,29 @@
 import fs from 'node:fs';
+import * as test from 'node:test';
 
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import sinon from 'sinon';
-import { RuleTester } from 'eslint';
+
+RuleTester.afterAll = test.after;
+RuleTester.describe = test.describe;
+RuleTester.it = test.it;
+RuleTester.itOnly = test.it.only;
 
 export const ruleTester = new RuleTester({
-  languageOptions: { ecmaVersion: 2018 },
+  languageOptions: {
+    ecmaVersion: 2018,
+  },
 });
 
 /**
  * @param {Record<string, string>} fakeFileSystem
  * @param {() => void} runTests
  */
-export function stubFileSystem(fakeFileSystem, runTests) {
+export function stubFileSystem(fakeFileSystem) {
   let existsSyncStub;
   let readFileSyncStub;
 
-  try {
+  test.before(() => {
     existsSyncStub = sinon.stub(fs, 'existsSync').callsFake((filePath) => {
       const cwd = process.cwd();
 
@@ -35,15 +43,28 @@ export function stubFileSystem(fakeFileSystem, runTests) {
 
       return fakeFileSystem[relativeFilePath];
     });
+  });
 
-    runTests();
-  } finally {
-    if (existsSyncStub != null) {
-      existsSyncStub.restore();
-    }
+  test.after(() => {
+    existsSyncStub?.reset();
+    readFileSyncStub?.reset();
+  });
+}
 
-    if (readFileSyncStub != null) {
-      readFileSyncStub.restore();
-    }
+export function normalizeTest(options) {
+  const [line1, line2, ...rest] = options.code.split('\n');
+
+  if (line1.trim() === '') {
+    const indent = line2.match(/^\s*/)[0]?.length ?? 0;
+
+    return {
+      ...options,
+      code: [line2, ...rest]
+        .map((line) => line.slice(indent))
+        .join('\n')
+        .trim(),
+    };
   }
+
+  return options;
 }
