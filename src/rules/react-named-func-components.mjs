@@ -2,7 +2,6 @@
 export default {
   meta: {
     type: 'problem',
-    fixable: 'code',
     docs: {
       description:
         'enforce use of named functions when defining React components',
