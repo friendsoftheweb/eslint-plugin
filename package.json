@@ -3,7 +3,7 @@
   "repository": {
     "url": "git+https://github.com/friendsoftheweb/eslint-plugin.git"
   },
-  "version": "0.0.3-beta.5",
+  "version": "0.0.3",
   "type": "module",
   "license": "MIT",
   "packageManager": "yarn@4.12.0",
