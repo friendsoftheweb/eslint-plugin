@@ -1,11 +1,11 @@
 import typescript from '@rollup/plugin-typescript';
+import json from '@rollup/plugin-json';
 import { defineConfig } from 'rollup';
 
 const external = ['node:fs', 'node:path', 'postcss', 'postcss-selector-parser'];
 
 /** @type {import('rollup').OutputOptions} */
 const output = {
-  preserveModules: true,
   exports: 'auto',
   sourcemap: true,
 };
@@ -21,6 +21,7 @@ export default defineConfig([
       },
     ],
     plugins: [
+      json(),
       typescript({
         outDir: 'dist/esm',
       }),
@@ -37,6 +38,7 @@ export default defineConfig([
       },
     ],
     plugins: [
+      json(),
       typescript({
         outDir: 'dist/cjs',
       }),
