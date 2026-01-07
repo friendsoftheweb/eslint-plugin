@@ -77,6 +77,28 @@ export default defineConfig([
 ]);
 ```
 
+### Gradual Adoption
+
+There is an additional configuration that makes it easier to adopt this plugin
+by only warning about violations.
+
+```javascript
+import friendsOfTheWeb from '@friendsoftheweb/eslint-plugin';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig([
+  { ignores: ['.yarn/**/*'] },
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    extends: [
+      tseslint.configs.recommended,
+      friendsOfTheWeb.configs['flat/migrate'],
+    ],
+  },
+]);
+```
+
 ### Example with React
 
 ```javascript

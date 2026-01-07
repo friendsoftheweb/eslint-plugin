@@ -21,7 +21,6 @@ const plugin = {
 };
 
 Object.assign(plugin.configs, {
-  // flat config format
   'flat/recommended': [
     {
       plugins: {
@@ -36,7 +35,20 @@ Object.assign(plugin.configs, {
     },
   ],
 
-  // eslintrc format
+  'flat/migrate': [
+    {
+      plugins: {
+        friendsoftheweb: plugin,
+      },
+      rules: {
+        'friendsoftheweb/ban-lodash-import': 'warn',
+        'friendsoftheweb/css-module-name-matches': 'warn',
+        'friendsoftheweb/css-module-class-exists': 'warn',
+        'friendsoftheweb/valid-server-actions-path': 'warn',
+      },
+    },
+  ],
+
   recommended: {
     plugins: { friendsoftheweb: plugin },
     rules: {
@@ -44,6 +56,16 @@ Object.assign(plugin.configs, {
       'friendsoftheweb/css-module-name-matches': 'error',
       'friendsoftheweb/css-module-class-exists': 'error',
       'friendsoftheweb/valid-server-actions-path': 'error',
+    },
+  },
+
+  migrate: {
+    plugins: { friendsoftheweb: plugin },
+    rules: {
+      'friendsoftheweb/ban-lodash-import': 'warn',
+      'friendsoftheweb/css-module-name-matches': 'warn',
+      'friendsoftheweb/css-module-class-exists': 'warn',
+      'friendsoftheweb/valid-server-actions-path': 'warn',
     },
   },
 });
