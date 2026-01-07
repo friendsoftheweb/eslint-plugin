@@ -7,6 +7,7 @@ export default {
     docs: {
       description:
         'enforce server actions are exported from file paths that match "app/**/_actions.ts" or "app/**/_actions/**/*.ts"',
+      url: 'https://github.com/friendsoftheweb/eslint-plugin#friendsofthewebvalid-server-actions-path',
     },
     schema: [],
     messages: {
