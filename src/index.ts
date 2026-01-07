@@ -1,13 +1,12 @@
 import packageJson from '../package.json' with { type: 'json' };
 
-import banLodashImport from './rules/ban-lodash-import.mjs';
-import cssModuleNameMatchesRule from './rules/css-module-name-matches.mjs';
-import cssModuleClassExistsRule from './rules/css-module-class-exists.mjs';
-import noLegacyNodeImport from './rules/no-legacy-node-import.mjs';
-import reactNamedFuncComponents from './rules/react-named-func-components.mjs';
-import validServerActionsPathRule from './rules/valid-server-actions-path.mjs';
+import banLodashImport from './rules/ban-lodash-import.ts';
+import cssModuleNameMatchesRule from './rules/css-module-name-matches.ts';
+import cssModuleClassExistsRule from './rules/css-module-class-exists.ts';
+import noLegacyNodeImport from './rules/no-legacy-node-import.ts';
+import reactNamedFuncComponents from './rules/react-named-func-components.ts';
+import validServerActionsPathRule from './rules/valid-server-actions-path.ts';
 
-/** @type {import('eslint').ESLint.Plugin} */
 const plugin = {
   meta: {
     name: packageJson.name,

@@ -1,7 +1,11 @@
 import fs from 'node:fs';
 import * as test from 'node:test';
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import {
+  type InvalidTestCase,
+  RuleTester,
+  type ValidTestCase,
+} from '@typescript-eslint/rule-tester';
 import sinon from 'sinon';
 
 RuleTester.afterAll = test.after;
@@ -15,11 +19,7 @@ export const ruleTester = new RuleTester({
   },
 });
 
-/**
- * @param {Record<string, string>} fakeFileSystem
- * @param {() => void} runTests
- */
-export function stubFileSystem(fakeFileSystem) {
+export function stubFileSystem(fakeFileSystem: Record<string, string>) {
   let existsSyncStub;
   let readFileSyncStub;
 
@@ -51,7 +51,13 @@ export function stubFileSystem(fakeFileSystem) {
   });
 }
 
-export function normalizeTest(options) {
+export function normalizeTestCase<
+  MessageIds extends string,
+  Options extends readonly unknown[],
+  TestCase extends
+    | ValidTestCase<Options>
+    | InvalidTestCase<MessageIds, Options>,
+>(options: TestCase): TestCase {
   const [line1, line2, ...rest] = options.code.split('\n');
 
   if (line1.trim() === '') {

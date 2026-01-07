@@ -1,7 +1,8 @@
 import path from 'node:path';
 
-/** @type {import('eslint').JSRuleDefinition} */
-export default {
+import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+
+const validServerActionsPathRule: RuleModule<'invalidPath'> = {
   meta: {
     type: 'problem',
     docs: {
@@ -15,6 +16,7 @@ export default {
         'Server action files must be located in a directory named "_actions" or have the filename "_actions.ts"',
     },
   },
+  defaultOptions: [],
   create(context) {
     return {
       ExpressionStatement(node) {
@@ -49,3 +51,5 @@ export default {
     };
   },
 };
+
+export default validServerActionsPathRule;

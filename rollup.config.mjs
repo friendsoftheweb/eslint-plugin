@@ -12,7 +12,7 @@ const output = {
 
 export default defineConfig([
   {
-    input: 'src/index.mjs',
+    input: 'src/index.ts',
     output: [
       {
         ...output,
@@ -29,7 +29,7 @@ export default defineConfig([
     external,
   },
   {
-    input: 'src/index.mjs',
+    input: 'src/index.ts',
     output: [
       {
         ...output,

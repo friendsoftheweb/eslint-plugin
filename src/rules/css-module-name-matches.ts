@@ -1,7 +1,8 @@
 import path from 'node:path';
 
-/** @type {import('eslint').JSRuleDefinition} */
-export default {
+import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+
+const cssModuleNameMatchesRule: RuleModule<'filenameMismatch'> = {
   meta: {
     type: 'problem',
     docs: {
@@ -15,6 +16,7 @@ export default {
         'CSS module filename "{{cssModuleFilename}}" does not match the current filename "{{filename}}"',
     },
   },
+  defaultOptions: [],
   create(context) {
     return {
       ImportDeclaration(node) {
@@ -47,3 +49,5 @@ export default {
     };
   },
 };
+
+export default cssModuleNameMatchesRule;

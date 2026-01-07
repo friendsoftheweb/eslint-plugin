@@ -1,5 +1,5 @@
-import banLodashImport from '../../src/rules/ban-lodash-import.mjs';
-import { ruleTester } from '../support.mjs';
+import banLodashImport from '../../src/rules/ban-lodash-import.ts';
+import { ruleTester } from '../support.ts';
 
 ruleTester.run('ban-lodash-import', banLodashImport, {
   valid: [
@@ -17,37 +17,61 @@ ruleTester.run('ban-lodash-import', banLodashImport, {
       filename: 'file.ts',
       code: `import { map } from "lodash";`,
       output: `import { map } from "lodash-es";`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     {
       filename: 'file.ts',
       code: `import { map } from 'lodash';`,
       output: `import { map } from 'lodash-es';`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     {
       filename: 'file.ts',
       code: `import _ from "lodash";`,
       output: `import _ from "lodash-es";`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     {
       filename: 'file.ts',
       code: `import map from "lodash/map";`,
       output: `import map from "lodash-es/map";`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     {
       filename: 'file.ts',
       code: `import fp from "lodash/fp";`,
       output: null,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
     {
       filename: 'file.ts',
       code: `import * as lodash from "lodash";`,
       output: `import * as lodash from "lodash-es";`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidImport',
+        },
+      ],
     },
   ],
 });

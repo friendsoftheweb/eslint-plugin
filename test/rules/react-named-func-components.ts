@@ -1,9 +1,9 @@
-import reactNamedFuncComponents from '../../src/rules/react-named-func-components.mjs';
-import { normalizeTest, ruleTester } from '../support.mjs';
+import reactNamedFuncComponents from '../../src/rules/react-named-func-components.ts';
+import { normalizeTestCase, ruleTester } from '../support.ts';
 
 ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
   valid: [
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         function Component() {
@@ -11,7 +11,7 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
         }
       `,
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         export function Component() {
@@ -19,7 +19,7 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
         }
       `,
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         export default function() {
@@ -27,7 +27,7 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
         }
       `,
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         export async function Component() {
@@ -35,7 +35,7 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
         }
       `,
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         const Component = forwardRef(() => {
@@ -45,86 +45,122 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
     }),
   ],
   invalid: [
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         const Component: FC = () => {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidComponentDefinition',
+        },
+      ],
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         const Component = () => {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidComponentDefinition',
+        },
+      ],
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         const Component: FC = async () => {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidComponentDefinition',
+        },
+      ],
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         const Component = async () => {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidComponentDefinition',
+        },
+      ],
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         const Component: FC = () => {
           return null;
         }
       `,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidComponentDefinition',
+        },
+      ],
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         export const Component: FC = () => {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidComponentDefinition',
+        },
+      ],
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         export const Component = () => {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidComponentDefinition',
+        },
+      ],
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         export const Component: FC = async () => {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidComponentDefinition',
+        },
+      ],
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Component.tsx',
       code: `
         export const Component = async () => {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'invalidComponentDefinition',
+        },
+      ],
     }),
   ],
 });

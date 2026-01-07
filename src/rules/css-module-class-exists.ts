@@ -1,11 +1,17 @@
-import path from 'node:path';
 import fs from 'node:fs';
+import path from 'node:path';
 
+import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 import { parse } from 'postcss';
 import selectorParser from 'postcss-selector-parser';
 
-/** @type {import('eslint').JSRuleDefinition} */
-export default {
+const cssModuleClassExistsRule: RuleModule<
+  | 'relativePath'
+  | 'defaultImport'
+  | 'onlyDefaultImport'
+  | 'fileDoesNotExist'
+  | 'classDoesNotExist'
+> = {
   meta: {
     type: 'problem',
     docs: {
@@ -27,6 +33,7 @@ export default {
         'Class `.{{className}}` does not exist in the CSS module imported as `{{objectName}}`',
     },
   },
+  defaultOptions: [],
   create(context) {
     const classNames = {};
 
@@ -210,3 +217,5 @@ export default {
     };
   },
 };
+
+export default cssModuleClassExistsRule;

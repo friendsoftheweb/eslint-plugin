@@ -1,5 +1,11 @@
-/** @type {import('eslint').JSRuleDefinition} */
-export default {
+import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+import type {
+  ArrowFunctionExpression,
+  FunctionDeclaration,
+  VariableDeclarator,
+} from 'estree';
+
+const reactNamedFuncComponentsRule: RuleModule<'invalidComponentDefinition'> = {
   meta: {
     type: 'problem',
     docs: {
@@ -13,10 +19,11 @@ export default {
         'React components must be defined using named functions',
     },
   },
+  defaultOptions: [],
   create(context) {
     return {
       VariableDeclarator(node) {
-        if (!isReactComponent(node)) {
+        if (!isReactComponent(node as VariableDeclarator)) {
           return;
         }
 
@@ -29,12 +36,11 @@ export default {
   },
 };
 
-/**
- *
- * @param {import('estree').FunctionDeclaration | import('estree').ArrowFunctionExpression | import('estree').VariableDeclarator} node
- * @returns {boolean}
- */
-function isReactComponent(node) {
+export default reactNamedFuncComponentsRule;
+
+function isReactComponent(
+  node: FunctionDeclaration | ArrowFunctionExpression | VariableDeclarator,
+) {
   if (node.type === 'VariableDeclarator') {
     if (node.init == null) {
       return false;
@@ -55,10 +61,15 @@ function isReactComponent(node) {
     }
   }
 
+  if (node.body.type !== 'BlockStatement') {
+    return false;
+  }
+
   for (const statement of node.body.body) {
     if (
       statement.type === 'ReturnStatement' &&
       statement.argument != null &&
+      // @ts-expect-error: ESTree types are missing JSXElement
       (statement.argument.type === 'JSXElement' ||
         (statement.argument.type === 'Literal' &&
           statement.argument.value === null))

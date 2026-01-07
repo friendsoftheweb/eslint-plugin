@@ -4,6 +4,7 @@
     "url": "git+https://github.com/friendsoftheweb/eslint-plugin.git"
   },
   "version": "0.0.2",
+  "type": "module",
   "license": "MIT",
   "packageManager": "yarn@4.12.0",
   "main": "./dist/cjs/index.js",
@@ -21,7 +22,7 @@
     "dist"
   ],
   "scripts": {
-    "test": "node test/index.mjs",
+    "test": "node --experimental-strip-types test/index.ts",
     "types:check": "tsc --noEmit",
     "lint": "eslint",
     "format:check": "prettier --check .",
@@ -33,6 +34,8 @@
     "@rollup/plugin-typescript": "^12.3.0",
     "@types/node": "^22.19.3",
     "@typescript-eslint/rule-tester": "^8.52.0",
+    "@typescript-eslint/types": "^8.52.0",
+    "@typescript-eslint/utils": "^8.52.0",
     "eslint": "^9.39.2",
     "eslint-plugin-eslint-plugin": "^7.3.0",
     "prettier": "^3.7.4",

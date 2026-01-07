@@ -1,5 +1,5 @@
-import cssModuleClassExists from '../../src/rules/css-module-class-exists.mjs';
-import { ruleTester, stubFileSystem, normalizeTest } from '../support.mjs';
+import cssModuleClassExists from '../../src/rules/css-module-class-exists.ts';
+import { ruleTester, stubFileSystem, normalizeTestCase } from '../support.ts';
 
 stubFileSystem({
   [`Button.module.css`]: `
@@ -37,60 +37,60 @@ stubFileSystem({
 
 ruleTester.run('css-module-class-exists', cssModuleClassExists, {
   valid: [
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `import styles from './Button.module.css';`,
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `
         import styles from './Button.module.css';
         const buttonClass = styles.container;
       `,
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `
         import styles from './Button.module.css';
         const buttonClass = styles['container'];
       `,
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `
         import styles from './Button.module.css';
         const { container } = styles;
       `,
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `
         import styles from './Button.module.css';
         const disabledClass = styles.disabled;
       `,
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `
         import styles from './Button.module.css';
         const activeClass = styles.active;
       `,
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `
         import styles from './Button.module.css';
         const responsiveClass = styles.responsive;
       `,
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `
         import styles from './Button.module.css';
         const containerClass = styles.containerQuery;
       `,
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `
         import styles from './Button.module.css';
@@ -99,39 +99,59 @@ ruleTester.run('css-module-class-exists', cssModuleClassExists, {
     }),
   ],
   invalid: [
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `import styles from '/absolute/path/to/Button.module.css';`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'relativePath',
+        },
+      ],
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `import { container } from './Button.module.css';`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'onlyDefaultImport',
+        },
+      ],
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `
         import styles from './Button.module.css';
         const buttonClass = styles.nonExistentClass;
       `,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'classDoesNotExist',
+        },
+      ],
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `
         import styles from './Button.module.css';
         const buttonClass = styles['nonExistentClass'];
       `,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'classDoesNotExist',
+        },
+      ],
     }),
-    normalizeTest({
+    normalizeTestCase({
       filename: 'Button.tsx',
       code: `
         import styles from './Button.module.css';
         const { nonExistentClass } = styles;
       `,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'classDoesNotExist',
+        },
+      ],
     }),
   ],
 });
