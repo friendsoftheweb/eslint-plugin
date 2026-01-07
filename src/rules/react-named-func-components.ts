@@ -61,22 +61,24 @@ function isReactComponent(
     }
   }
 
-  if (node.body.type !== 'BlockStatement') {
-    return false;
-  }
-
-  for (const statement of node.body.body) {
-    if (
-      statement.type === 'ReturnStatement' &&
-      statement.argument != null &&
-      // @ts-expect-error: ESTree types are missing JSXElement
-      (statement.argument.type === 'JSXElement' ||
-        (statement.argument.type === 'Literal' &&
-          statement.argument.value === null))
-    ) {
-      return true;
+  if (node.body.type === 'BlockStatement') {
+    for (const statement of node.body.body) {
+      if (
+        statement.type === 'ReturnStatement' &&
+        statement.argument != null &&
+        // @ts-expect-error: ESTree types are missing JSXElement
+        (statement.argument.type === 'JSXElement' ||
+          // @ts-expect-error: ESTree types are missing JSXFragment
+          statement.argument.type === 'JSXFragment' ||
+          (statement.argument.type === 'Literal' &&
+            statement.argument.value === null))
+      ) {
+        return true;
+      }
     }
+    // @ts-expect-error: ESTree types are missing JSXElement
+  } else if (node.body.type === 'JSXElement') {
+    return true;
   }
-
   return false;
 }

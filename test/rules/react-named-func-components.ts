@@ -162,5 +162,27 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
         },
       ],
     }),
+    normalizeTestCase({
+      filename: 'Component.tsx',
+      code: `
+        export const Component: FC = () => <div>Hello, world!</div>;
+      `,
+      errors: [
+        {
+          messageId: 'invalidComponentDefinition',
+        },
+      ],
+    }),
+    normalizeTestCase({
+      filename: 'Component.tsx',
+      code: `
+        export const Component = () => <div>Hello, world!</div>;
+      `,
+      errors: [
+        {
+          messageId: 'invalidComponentDefinition',
+        },
+      ],
+    }),
   ],
 });
