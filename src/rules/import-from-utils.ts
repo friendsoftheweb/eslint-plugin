@@ -40,6 +40,10 @@ const importFromUtils: RuleModule<'invalidImport'> = {
   create(context) {
     return {
       ImportDeclaration(node) {
+        if (node.importKind === 'type') {
+          return;
+        }
+
         if (
           typeof node.source.value !== 'string' ||
           node.source.value === '@friendsoftheweb/utils'
