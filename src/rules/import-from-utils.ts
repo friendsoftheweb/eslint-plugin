@@ -33,7 +33,7 @@ const importFromUtils: RuleModule<'invalidImport'> = {
     schema: [],
     messages: {
       invalidImport:
-        'The "{{functionName}}" function must be imported from "@friendsoftheweb/utils"',
+        '{{functionNames}} must be imported from "@friendsoftheweb/utils"',
     },
   },
   defaultOptions: [],
@@ -47,7 +47,7 @@ const importFromUtils: RuleModule<'invalidImport'> = {
           return;
         }
 
-        let functionName: string | null = null;
+        const foundFunctionNames: string[] = [];
 
         for (const specifier of node.specifiers) {
           if (
@@ -55,13 +55,11 @@ const importFromUtils: RuleModule<'invalidImport'> = {
             specifier.imported.type === 'Identifier' &&
             functionNames.includes(specifier.imported.name)
           ) {
-            functionName = specifier.imported.name;
-
-            break;
+            foundFunctionNames.push(specifier.imported.name);
           }
         }
 
-        if (functionName == null) {
+        if (foundFunctionNames.length === 0) {
           return;
         }
 
@@ -69,10 +67,17 @@ const importFromUtils: RuleModule<'invalidImport'> = {
           node,
           messageId: 'invalidImport',
           data: {
-            functionName,
+            functionNames: foundFunctionNames
+              .map((name) => `"${name}"`)
+              .join(', '),
           },
           fix(fixer) {
             if (typeof node.source.value !== 'string') {
+              return null;
+            }
+
+            if (foundFunctionNames.length < node.specifiers.length) {
+              // Don't auto-fix if there are other imports that would be affected
               return null;
             }
 

@@ -10,17 +10,45 @@ ruleTester.run('import-from-utils', importFromUtils, {
       code: `import { parseNullableInt } from '@friendsoftheweb/utils';`,
     },
   ],
-  invalid: functionNames.map((functionName) => ({
-    filename: 'file.ts',
-    code: `import { ${functionName} } from 'src/utils/${functionName}';`,
-    output: `import { ${functionName} } from '@friendsoftheweb/utils';`,
-    errors: [
-      {
-        messageId: 'invalidImport',
-        data: {
-          functionName,
+  invalid: [
+    {
+      filename: 'file.ts',
+      code: `import { parseNullableInt } from 'src/utils/parseNullableInt';`,
+      output: `import { parseNullableInt } from '@friendsoftheweb/utils';`,
+      errors: [
+        {
+          messageId: 'invalidImport',
+          data: {
+            functionNames: `"parseNullableInt"`,
+          },
         },
-      },
-    ],
-  })),
+      ],
+    },
+    {
+      filename: 'file.ts',
+      code: `import { parseNullableInt, parseNullableFloat } from 'src/utils';`,
+      output: `import { parseNullableInt, parseNullableFloat } from '@friendsoftheweb/utils';`,
+      errors: [
+        {
+          messageId: 'invalidImport',
+          data: {
+            functionNames: `"parseNullableInt", "parseNullableFloat"`,
+          },
+        },
+      ],
+    },
+    {
+      filename: 'file.ts',
+      code: `import { parseNullableInt, unknownImport } from 'src/utils';`,
+      output: null,
+      errors: [
+        {
+          messageId: 'invalidImport',
+          data: {
+            functionNames: `"parseNullableInt"`,
+          },
+        },
+      ],
+    },
+  ],
 });
