@@ -1,6 +1,4 @@
-import importFromUtils, {
-  functionNames,
-} from '../../src/rules/import-from-utils.ts';
+import importFromUtils from '../../src/rules/import-from-utils.ts';
 import { ruleTester } from '../support.ts';
 
 ruleTester.run('import-from-utils', importFromUtils, {
