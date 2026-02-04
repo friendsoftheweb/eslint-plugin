@@ -1,8 +1,9 @@
 import packageJson from '../package.json' with { type: 'json' };
 
 import banLodashImport from './rules/ban-lodash-import.ts';
-import cssModuleNameMatchesRule from './rules/css-module-name-matches.ts';
 import cssModuleClassExistsRule from './rules/css-module-class-exists.ts';
+import cssModuleNameMatchesRule from './rules/css-module-name-matches.ts';
+import importFromUtils from './rules/import-from-utils.ts';
 import noLegacyNodeImport from './rules/no-legacy-node-import.ts';
 import reactNamedFuncComponents from './rules/react-named-func-components.ts';
 import validServerActionsPathRule from './rules/valid-server-actions-path.ts';
@@ -17,6 +18,7 @@ const plugin = {
     'ban-lodash-import': banLodashImport,
     'css-module-name-matches': cssModuleNameMatchesRule,
     'css-module-class-exists': cssModuleClassExistsRule,
+    'import-from-utils': importFromUtils,
     'no-legacy-node-import': noLegacyNodeImport,
     'react-named-func-components': reactNamedFuncComponents,
     'valid-server-actions-path': validServerActionsPathRule,
