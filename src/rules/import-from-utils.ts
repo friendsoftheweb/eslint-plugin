@@ -56,6 +56,7 @@ const importFromUtils: RuleModule<'invalidImport'> = {
         for (const specifier of node.specifiers) {
           if (
             specifier.type === 'ImportSpecifier' &&
+            specifier.importKind !== 'type' &&
             specifier.imported.type === 'Identifier' &&
             functionNames.includes(specifier.imported.name)
           ) {
