@@ -1,5 +1,6 @@
 import packageJson from '../package.json' with { type: 'json' };
 
+import banChalk from './rules/ban-chalk.ts';
 import banLodashImport from './rules/ban-lodash-import.ts';
 import cssModuleClassExistsRule from './rules/css-module-class-exists.ts';
 import cssModuleNameMatchesRule from './rules/css-module-name-matches.ts';
@@ -15,6 +16,7 @@ const plugin = {
   },
   configs: {},
   rules: {
+    'ban-chalk': banChalk,
     'ban-lodash-import': banLodashImport,
     'css-module-name-matches': cssModuleNameMatchesRule,
     'css-module-class-exists': cssModuleClassExistsRule,
@@ -29,10 +31,7 @@ const RULE_NAMES = Object.keys(plugin.rules).map(
   (ruleName) => `friendsoftheweb/${ruleName}`,
 );
 
-/**
- * @param {'error' | 'warn'} reportLevel
- */
-function buildConfig(reportLevel) {
+function buildConfig(reportLevel: 'error' | 'warn') {
   return {
     plugins: {
       friendsoftheweb: plugin,
