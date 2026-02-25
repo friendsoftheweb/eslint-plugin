@@ -1,3 +1,4 @@
+import './rules/ban-chalk.ts';
 import './rules/ban-lodash-import.ts';
 import './rules/css-module-class-exists.ts';
 import './rules/css-module-name-matches.ts';

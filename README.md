@@ -10,6 +10,38 @@ yarn add -D @friendsoftheweb/eslint-plugin
 
 ### Recommended Rules
 
+#### `friendsoftheweb/ban-chalk`
+
+Enforces using `styleText` from `node:util` instead of the `chalk` package.
+
+This rule helps remove the `chalk` dependency by replacing it with the built-in
+`styleText` utility available in Node.js 20+.
+
+##### Examples
+
+❌ **Incorrect:**
+
+```javascript
+import chalk from 'chalk';
+
+chalk.red('error');
+chalk.bold.red('error');
+```
+
+✅ **Correct:**
+
+```javascript
+import { styleText } from 'node:util';
+
+styleText('red', 'error');
+styleText(['bold', 'red'], 'error');
+```
+
+**Note:** This rule provides automatic fixes for default imports and most
+usages. Chained styles (e.g. `chalk.bold.red`) are converted to an array of
+formats. Named imports (e.g. `import { red } from 'chalk'`) are flagged but
+require manual migration.
+
 #### `friendsoftheweb/ban-lodash-import`
 
 Enforces importing functions from `lodash-es` instead of `lodash`.
