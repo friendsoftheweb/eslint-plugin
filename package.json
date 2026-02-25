@@ -24,6 +24,7 @@
     "test": "node --experimental-strip-types test/index.ts",
     "types:check": "tsc --noEmit",
     "lint": "eslint",
+    "format": "prettier --write .",
     "format:check": "prettier --check .",
     "build": "rm -rf dist && rollup --config rollup.config.mjs && tsc -p tsconfig.build.json",
     "publish": "npm publish --access public",

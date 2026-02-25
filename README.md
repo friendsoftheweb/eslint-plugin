@@ -37,10 +37,10 @@ styleText('red', 'error');
 styleText(['bold', 'red'], 'error');
 ```
 
-**Note:** This rule provides automatic fixes for default imports and most usages.
-Chained styles (e.g. `chalk.bold.red`) are converted to an array of formats.
-Named imports (e.g. `import { red } from 'chalk'`) are flagged but require
-manual migration.
+**Note:** This rule provides automatic fixes for default imports and most
+usages. Chained styles (e.g. `chalk.bold.red`) are converted to an array of
+formats. Named imports (e.g. `import { red } from 'chalk'`) are flagged but
+require manual migration.
 
 #### `friendsoftheweb/ban-lodash-import`
 

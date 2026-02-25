@@ -13,8 +13,7 @@ const banChalkRule: RuleModule<'invalidImport' | 'invalidUsage'> = {
     schema: [],
     messages: {
       invalidImport: 'Import `styleText` from `node:util` instead of `chalk`',
-      invalidUsage:
-        'Use `styleText` from `node:util` instead of `chalk`',
+      invalidUsage: 'Use `styleText` from `node:util` instead of `chalk`',
     },
   },
   defaultOptions: [],
