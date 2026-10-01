@@ -82,6 +82,42 @@ file.
 This rule ensures consistent naming conventions by requiring CSS module files to
 have the same base name as the file importing them.
 
+#### `friendsoftheweb/no-namespace-import`
+
+Disallows namespace imports (`import * as X from '...'`) from node modules.
+Relative imports, Node standard library modules, and type-only imports are
+ignored.
+
+##### Options
+
+- `allow` (`string[]`): libraries that may be imported with a namespace import.
+  An entry matches a package name (including its subpaths, e.g. `lodash` allows
+  `lodash/fp`) or an exact import path.
+
+```javascript
+// eslint.config.js
+{
+  rules: {
+    'friendsoftheweb/no-namespace-import': ['error', { allow: ['react'] }],
+  },
+}
+```
+
+##### Examples
+
+❌ **Incorrect:**
+
+```javascript
+import * as Sentry from '@sentry/node';
+```
+
+✅ **Correct:**
+
+```javascript
+import { captureException } from '@sentry/node';
+import * as React from 'react'; // with `allow: ['react']`
+```
+
 #### `friendsoftheweb/valid-server-actions-path`
 
 Enforces server actions are exported from file paths that match
