@@ -6,6 +6,7 @@ import cssModuleClassExistsRule from './rules/css-module-class-exists.ts';
 import cssModuleNameMatchesRule from './rules/css-module-name-matches.ts';
 import importFromUtils from './rules/import-from-utils.ts';
 import noLegacyNodeImport from './rules/no-legacy-node-import.ts';
+import noNamespaceImport from './rules/no-namespace-import.ts';
 import reactNamedFuncComponents from './rules/react-named-func-components.ts';
 import validServerActionsPathRule from './rules/valid-server-actions-path.ts';
 
@@ -22,6 +23,7 @@ const plugin = {
     'css-module-class-exists': cssModuleClassExistsRule,
     'import-from-utils': importFromUtils,
     'no-legacy-node-import': noLegacyNodeImport,
+    'no-namespace-import': noNamespaceImport,
     'react-named-func-components': reactNamedFuncComponents,
     'valid-server-actions-path': validServerActionsPathRule,
   },
@@ -57,6 +59,7 @@ const recommendedConfig = {
   ...errorConfig,
   rules: {
     ...errorConfig.rules,
+    'friendsoftheweb/no-namespace-import': 'warn',
     'friendsoftheweb/react-named-func-components': 'off',
   },
 };
