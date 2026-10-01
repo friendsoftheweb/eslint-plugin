@@ -167,6 +167,22 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
       ],
       [
         `
+        const Component = props => <div />;
+      `,
+        `
+        function Component(props) { return <div />; }
+      `,
+      ],
+      [
+        `
+        const Component = async props => <div />;
+      `,
+        `
+        async function Component(props) { return <div />; }
+      `,
+      ],
+      [
+        `
         export const Component = ({ name }) => (
           <div>Hello, {name}!</div>
         );

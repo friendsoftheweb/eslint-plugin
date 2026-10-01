@@ -97,7 +97,14 @@ function buildFix(
     header = header.replace(/^async\s*/, '');
   }
 
-  const bodyText = sourceCode.text.slice(arrowToken.range[1], arrow.range[1]);
+  header = header.trim();
+
+  // `props => ...` has no parentheses, but `function Foo props {}` is invalid
+  if (/^[\w$]+$/.test(header)) {
+    header = `(${header})`;
+  }
+
+  const bodyText =sourceCode.text.slice(arrowToken.range[1], arrow.range[1]);
 
   const body =
     arrow.body.type === 'BlockStatement'
