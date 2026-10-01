@@ -51,7 +51,7 @@ export default reactNamedFuncComponentsRule;
  * Converts `const Foo = (props) => ...` into `function Foo(props) { ... }`.
  * Returns `null` (no fix) whenever the conversion could change behavior or
  * drop information, e.g. a type annotation on the variable (`FC<Props>`),
- * multiple declarators, or an arrow function using `this`/`arguments`.
+ * multiple declarators, or an arrow function using `this`/`arguments`/`super`/`new.target`.
  */
 function buildFix(
   fixer: RuleFixer,
@@ -73,11 +73,19 @@ function buildFix(
     return null;
   }
 
-  const usesFunctionScope = sourceCode
-    .getTokens(arrow)
-    // Match on value only: tokens inside JSX expressions are typed as
-    // `JSXIdentifier`. A false positive just means no autofix.
-    .some((token) => token.value === 'this' || token.value === 'arguments');
+  const tokens = sourceCode.getTokens(arrow);
+
+  // Match on value only: tokens inside JSX expressions are typed as
+  // `JSXIdentifier`. A false positive just means no autofix.
+  const usesFunctionScope = tokens.some(
+    (token, index) =>
+      token.value === 'this' ||
+      token.value === 'arguments' ||
+      token.value === 'super' ||
+      (token.value === 'new' &&
+        tokens[index + 1]?.value === '.' &&
+        tokens[index + 2]?.value === 'target'),
+  );
 
   if (usesFunctionScope) {
     return null;

@@ -78,6 +78,22 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
       `,
         null,
       ],
+      [
+        `
+        const Component = () => {
+          return <div>{new.target}</div>;
+        }
+      `,
+        null,
+      ],
+      [
+        `
+        const Component = () => {
+          return <div>{super.name}</div>;
+        }
+      `,
+        null,
+      ],
       // Multiple declarators: not auto-fixed
       [
         `
