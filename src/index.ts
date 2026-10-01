@@ -59,6 +59,7 @@ const recommendedConfig = {
   ...errorConfig,
   rules: {
     ...errorConfig.rules,
+    'friendsoftheweb/no-namespace-import': 'warn',
     'friendsoftheweb/react-named-func-components': 'off',
   },
 };
