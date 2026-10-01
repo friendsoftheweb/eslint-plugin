@@ -53,157 +53,203 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
     }),
   ],
   invalid: [
-    normalizeTestCase({
-      filename: 'Component.tsx',
-      code: `
+    ...[
+      // Type annotation on the variable: reported but not auto-fixed
+      [
+        `
         const Component: FC = () => {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: [
-        {
-          messageId: 'invalidComponentDefinition',
-        },
+        null,
       ],
-    }),
-    normalizeTestCase({
-      filename: 'Component.tsx',
-      code: `
+      [
+        `
+        export const Component: FC = async () => <div>Hello, world!</div>;
+      `,
+        null,
+      ],
+      // Uses `this` / `arguments`: not auto-fixed
+      [
+        `
+        const Component = () => {
+          return <div>{arguments.length}</div>;
+        }
+      `,
+        null,
+      ],
+      [
+        `
+        const Component = () => {
+          return <div>{new.target}</div>;
+        }
+      `,
+        null,
+      ],
+      [
+        `
+        const Component = () => {
+          return <div>{super.name}</div>;
+        }
+      `,
+        null,
+      ],
+      // Declaration is a `for` initializer: not auto-fixed
+      [
+        `
+        for (const Component = () => <div />; ;) {}
+      `,
+        null,
+      ],
+      // Multiple declarators: not auto-fixed
+      [
+        `
+        const Component = () => <div />, other = 1;
+      `,
+        null,
+      ],
+      [
+        `
         const Component = () => {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: [
-        {
-          messageId: 'invalidComponentDefinition',
-        },
-      ],
-    }),
-    normalizeTestCase({
-      filename: 'Component.tsx',
-      code: `
-        const Component: FC = async () => {
+        `
+        function Component() {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: [
-        {
-          messageId: 'invalidComponentDefinition',
-        },
       ],
-    }),
-    normalizeTestCase({
-      filename: 'Component.tsx',
-      code: `
-        const Component: FC = () => {
-          return <>Hello, world!</>;
+      [
+        `
+        const Component = (props) => {
+          return <>{props.children}</>;
+        };
+      `,
+        `
+        function Component(props) {
+          return <>{props.children}</>;
         }
       `,
-      errors: [
-        {
-          messageId: 'invalidComponentDefinition',
-        },
       ],
-    }),
-    normalizeTestCase({
-      filename: 'Component.tsx',
-      code: `
+      [
+        `
         const Component = async () => {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: [
-        {
-          messageId: 'invalidComponentDefinition',
-        },
-      ],
-    }),
-    normalizeTestCase({
-      filename: 'Component.tsx',
-      code: `
-        const Component: FC = () => {
-          return null;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'invalidComponentDefinition',
-        },
-      ],
-    }),
-    normalizeTestCase({
-      filename: 'Component.tsx',
-      code: `
-        export const Component: FC = () => {
+        `
+        async function Component() {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: [
-        {
-          messageId: 'invalidComponentDefinition',
-        },
       ],
-    }),
-    normalizeTestCase({
-      filename: 'Component.tsx',
-      code: `
+      [
+        `
+        const Component = () => {
+          return null;
+        }
+      `,
+        `
+        function Component() {
+          return null;
+        }
+      `,
+      ],
+      [
+        `
         export const Component = () => {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: [
-        {
-          messageId: 'invalidComponentDefinition',
-        },
-      ],
-    }),
-    normalizeTestCase({
-      filename: 'Component.tsx',
-      code: `
-        export const Component: FC = async () => {
+        `
+        export function Component() {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: [
-        {
-          messageId: 'invalidComponentDefinition',
-        },
       ],
-    }),
-    normalizeTestCase({
-      filename: 'Component.tsx',
-      code: `
+      [
+        `
         export const Component = async () => {
           return <div>Hello, world!</div>;
         }
       `,
-      errors: [
-        {
-          messageId: 'invalidComponentDefinition',
-        },
-      ],
-    }),
-    normalizeTestCase({
-      filename: 'Component.tsx',
-      code: `
-        export const Component: FC = () => <div>Hello, world!</div>;
+        `
+        export async function Component() {
+          return <div>Hello, world!</div>;
+        }
       `,
-      errors: [
-        {
-          messageId: 'invalidComponentDefinition',
-        },
       ],
-    }),
-    normalizeTestCase({
-      filename: 'Component.tsx',
-      code: `
+      [
+        `
         export const Component = () => <div>Hello, world!</div>;
       `,
-      errors: [
-        {
-          messageId: 'invalidComponentDefinition',
-        },
+        `
+        export function Component() { return (<div>Hello, world!</div>); }
+      `,
       ],
+      [
+        `
+        const Component = props => <div />;
+      `,
+        `
+        function Component(props) { return (<div />); }
+      `,
+      ],
+      [
+        `
+        const Component = async props => <div />;
+      `,
+        `
+        async function Component(props) { return (<div />); }
+      `,
+      ],
+      [
+        `
+        const Component = () => // comment
+          <div />;
+      `,
+        `
+        function Component() { return (// comment
+          <div />); }
+      `,
+      ],
+      [
+        `
+        export const Component = ({ name }) => (
+          <div>Hello, {name}!</div>
+        );
+      `,
+        `
+        export function Component({ name }) { return (
+          <div>Hello, {name}!</div>
+        ); }
+      `,
+      ],
+    ].map(([code, output]) =>
+      normalizeTestCase({
+        filename: 'Component.tsx',
+        code,
+        output:
+          output == null ? null : normalizeTestCase({ code: output }).code,
+        errors: [{ messageId: 'invalidComponentDefinition' as const }],
+      }),
+    ),
+    normalizeTestCase({
+      filename: 'Component.tsx',
+      code: `
+        export const Component = <T,>(props: Props<T>): JSX.Element => {
+          return <div>Hello, world!</div>;
+        }
+      `,
+      output: normalizeTestCase({
+        code: `
+        export function Component<T,>(props: Props<T>): JSX.Element {
+          return <div>Hello, world!</div>;
+        }
+      `,
+      }).code,
+      errors: [{ messageId: 'invalidComponentDefinition' }],
     }),
   ],
 });
