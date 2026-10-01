@@ -98,7 +98,7 @@ ignored.
 // eslint.config.js
 {
   rules: {
-    'friendsoftheweb/no-namespace-import': ['error', { allow: ['react'] }],
+    'friendsoftheweb/no-namespace-import': ['error', { allow: ['@sentry/node'] }],
   },
 }
 ```
@@ -108,14 +108,14 @@ ignored.
 ❌ **Incorrect:**
 
 ```javascript
-import * as Sentry from '@sentry/node';
+import * as React from 'react';
 ```
 
 ✅ **Correct:**
 
 ```javascript
-import { captureException } from '@sentry/node';
-import * as React from 'react'; // with `allow: ['react']`
+import { useState } from 'react';
+import * as Sentry from '@sentry/node'; // with `allow: ['@sentry/node']`
 ```
 
 #### `friendsoftheweb/valid-server-actions-path`
