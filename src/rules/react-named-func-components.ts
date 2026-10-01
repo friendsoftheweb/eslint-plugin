@@ -1,4 +1,9 @@
-import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+import type { TSESTree } from '@typescript-eslint/utils';
+import type {
+  RuleFixer,
+  RuleModule,
+  SourceCode,
+} from '@typescript-eslint/utils/ts-eslint';
 import type {
   ArrowFunctionExpression,
   FunctionDeclaration,
@@ -13,6 +18,7 @@ const reactNamedFuncComponentsRule: RuleModule<'invalidComponentDefinition'> = {
         'enforce use of named functions when defining React components',
       url: 'https://github.com/friendsoftheweb/eslint-plugin#friendsofthewebreact-named-func-components',
     },
+    fixable: 'code',
     schema: [],
     messages: {
       invalidComponentDefinition:
@@ -21,6 +27,8 @@ const reactNamedFuncComponentsRule: RuleModule<'invalidComponentDefinition'> = {
   },
   defaultOptions: [],
   create(context) {
+    const { sourceCode } = context;
+
     return {
       VariableDeclarator(node) {
         if (!isReactComponent(node as VariableDeclarator)) {
@@ -30,6 +38,7 @@ const reactNamedFuncComponentsRule: RuleModule<'invalidComponentDefinition'> = {
         context.report({
           node,
           messageId: 'invalidComponentDefinition',
+          fix: (fixer) => buildFix(fixer, sourceCode, node),
         });
       },
     };
@@ -37,6 +46,69 @@ const reactNamedFuncComponentsRule: RuleModule<'invalidComponentDefinition'> = {
 };
 
 export default reactNamedFuncComponentsRule;
+
+/**
+ * Converts `const Foo = (props) => ...` into `function Foo(props) { ... }`.
+ * Returns `null` (no fix) whenever the conversion could change behavior or
+ * drop information, e.g. a type annotation on the variable (`FC<Props>`),
+ * multiple declarators, or an arrow function using `this`/`arguments`.
+ */
+function buildFix(
+  fixer: RuleFixer,
+  sourceCode: Readonly<SourceCode>,
+  node: TSESTree.VariableDeclarator,
+) {
+  const declaration = node.parent;
+  const arrow = node.init;
+
+  if (
+    declaration.type !== 'VariableDeclaration' ||
+    declaration.declarations.length !== 1 ||
+    declaration.declare ||
+    arrow == null ||
+    arrow.type !== 'ArrowFunctionExpression' ||
+    node.id.type !== 'Identifier' ||
+    node.id.typeAnnotation != null
+  ) {
+    return null;
+  }
+
+  const usesFunctionScope = sourceCode
+    .getTokens(arrow)
+    // Match on value only: tokens inside JSX expressions are typed as
+    // `JSXIdentifier`. A false positive just means no autofix.
+    .some((token) => token.value === 'this' || token.value === 'arguments');
+
+  if (usesFunctionScope) {
+    return null;
+  }
+
+  const arrowToken = sourceCode.getTokenBefore(arrow.body, {
+    filter: (token) => token.type === 'Punctuator' && token.value === '=>',
+  });
+
+  if (arrowToken == null) {
+    return null;
+  }
+
+  let header = sourceCode.text.slice(arrow.range[0], arrowToken.range[0]);
+
+  if (arrow.async) {
+    header = header.replace(/^async\s*/, '');
+  }
+
+  const bodyText = sourceCode.text.slice(arrowToken.range[1], arrow.range[1]);
+
+  const body =
+    arrow.body.type === 'BlockStatement'
+      ? bodyText.trim()
+      : `{ return ${bodyText.trim()}; }`;
+
+  return fixer.replaceText(
+    declaration,
+    `${arrow.async ? 'async ' : ''}function ${node.id.name}${header.trim()} ${body}`,
+  );
+}
 
 function isReactComponent(
   node: FunctionDeclaration | ArrowFunctionExpression | VariableDeclarator,
