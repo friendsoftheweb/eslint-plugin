@@ -138,6 +138,11 @@ This rule promotes better debugging and development experience by ensuring React
 components are defined as named functions, which provide clearer stack traces
 and better display names in React DevTools.
 
+🔧 This rule is auto-fixable for simple cases. It is not auto-fixed when the
+variable has a type annotation (e.g. `FC<Props>`, since the type would be lost),
+when the arrow function uses `this` or `arguments`, or when the declaration has
+multiple declarators; those are still reported and need a manual fix.
+
 ##### Examples
 
 ❌ **Incorrect:**
