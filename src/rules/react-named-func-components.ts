@@ -65,6 +65,9 @@ function buildFix(
     declaration.type !== 'VariableDeclaration' ||
     declaration.declarations.length !== 1 ||
     declaration.declare ||
+    // `for (const Foo = () => ...;;)` can't contain a function declaration
+    (declaration.parent.type === 'ForStatement' &&
+      declaration.parent.init === declaration) ||
     arrow == null ||
     arrow.type !== 'ArrowFunctionExpression' ||
     node.id.type !== 'Identifier' ||

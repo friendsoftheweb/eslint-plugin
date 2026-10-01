@@ -94,6 +94,13 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
       `,
         null,
       ],
+      // Declaration is a `for` initializer: not auto-fixed
+      [
+        `
+        for (const Component = () => <div />; ;) {}
+      `,
+        null,
+      ],
       // Multiple declarators: not auto-fixed
       [
         `
