@@ -1,6 +1,8 @@
+import { builtinModules } from 'node:module';
+
 import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 
-import { NODE_STANDARD_MODULES } from './no-legacy-node-import.ts';
+const NODE_BUILTIN_MODULES = new Set(builtinModules);
 
 type Options = [{ allow?: string[] }?];
 
@@ -19,7 +21,7 @@ function isPackageImport(source: string): boolean {
     return false;
   }
 
-  return !NODE_STANDARD_MODULES.includes(source);
+  return !NODE_BUILTIN_MODULES.has(source);
 }
 
 const noNamespaceImportRule: RuleModule<'namespaceImport', Options> = {

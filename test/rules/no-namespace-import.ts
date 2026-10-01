@@ -12,6 +12,8 @@ ruleTester.run('no-namespace-import', noNamespaceImport, {
     // Node standard library is not a node module
     { filename: 'file.ts', code: `import * as fs from 'node:fs';` },
     { filename: 'file.ts', code: `import * as path from 'path';` },
+    { filename: 'file.ts', code: `import * as posix from 'path/posix';` },
+    { filename: 'file.ts', code: `import * as win32 from 'path/win32';` },
     // Type-only namespace imports are erased
     { filename: 'file.ts', code: `import type * as Types from 'some-lib';` },
     // Allowed libraries
