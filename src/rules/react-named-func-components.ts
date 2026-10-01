@@ -104,12 +104,18 @@ function buildFix(
     header = `(${header})`;
   }
 
-  const bodyText =sourceCode.text.slice(arrowToken.range[1], arrow.range[1]);
+  const bodyText = sourceCode.text
+    .slice(arrowToken.range[1], arrow.range[1])
+    .trim();
+
+  // Parenthesize so a comment or newline after `=>` can't end up directly
+  // after `return`, where automatic semicolon insertion would break it.
+  const isParenthesized = bodyText.startsWith('(') && bodyText.endsWith(')');
 
   const body =
     arrow.body.type === 'BlockStatement'
-      ? bodyText.trim()
-      : `{ return ${bodyText.trim()}; }`;
+      ? bodyText
+      : `{ return ${isParenthesized ? bodyText : `(${bodyText})`}; }`;
 
   return fixer.replaceText(
     declaration,

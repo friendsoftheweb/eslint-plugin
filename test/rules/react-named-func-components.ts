@@ -162,7 +162,7 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
         export const Component = () => <div>Hello, world!</div>;
       `,
         `
-        export function Component() { return <div>Hello, world!</div>; }
+        export function Component() { return (<div>Hello, world!</div>); }
       `,
       ],
       [
@@ -170,7 +170,7 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
         const Component = props => <div />;
       `,
         `
-        function Component(props) { return <div />; }
+        function Component(props) { return (<div />); }
       `,
       ],
       [
@@ -178,7 +178,17 @@ ruleTester.run('react-named-func-components', reactNamedFuncComponents, {
         const Component = async props => <div />;
       `,
         `
-        async function Component(props) { return <div />; }
+        async function Component(props) { return (<div />); }
+      `,
+      ],
+      [
+        `
+        const Component = () => // comment
+          <div />;
+      `,
+        `
+        function Component() { return (// comment
+          <div />); }
       `,
       ],
       [
